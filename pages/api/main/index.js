@@ -13,12 +13,13 @@ const handler = nc()
     .post(async (req, res) => {
         const data = Customer({
             name: req.body.name,
+            password: req.body.password,
             email: req.body.email
         })
         data.save().then(() => {
-            res.send("good")
+            res.status(200).send("data has been saved to db")
         }).catch((e) => {
-            res.send("failed")
+            res.status(400).send("failed to save data to db")
         })
     })
 
