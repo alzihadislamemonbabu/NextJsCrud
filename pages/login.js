@@ -1,8 +1,24 @@
-import React from 'react'
+import { useRouter } from 'next/router'
+
 
 function login() {
+
+    // router query 
+    const router = useRouter()
+
+    // end router query 
+
+    // checking login info and redirecting to home page
+    const findingData = async () => {
+        router.push('/')
+    }
+
     return (
-        <div>login</div>
+        <>
+            <input type="text" name="name" id="" />
+            <input type="text" name="password" id="" />
+            <button type="submit" onClick={findingData}>Login</button>
+        </>
     )
 }
 

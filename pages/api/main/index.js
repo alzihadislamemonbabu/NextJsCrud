@@ -3,12 +3,21 @@ import nc from "next-connect"
 const Customer = require('../../../mongo/details')
 
 
+
 connectDb()
 
 const handler = nc()
+    .get(async (req, res) => {
+        try {
+            const data = await Customer.find({ name: req.body.name })
+            for (const ud of data) {
+                console.log(ud.name)
+            }
+            res.status(200).send(data[0])
+        } catch (error) {
 
-    .get((req, res) => {
-        res.send("Hello world");
+        }
+
     })
     .post(async (req, res) => {
         const data = Customer({
