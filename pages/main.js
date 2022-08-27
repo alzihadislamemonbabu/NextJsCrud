@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import bcrypt from 'bcryptjs'
+import { useRouter } from 'next/router'
 
 function handle() {
     const [userName, setUserName] = useState("")
     const [userPassword, setUserPassword] = useState("")
     const [userEmail, setUserEmail] = useState("")
+    const router = useRouter()
 
     // getting user details from usres 
     const handleName = async (e) => {
@@ -15,8 +17,7 @@ function handle() {
     }
     const handleEmail = async (e) => {
         setUserEmail(e.target.value)
-    }
-    // end 
+    }// end 
 
     // posting data to api 
     const handleSubmit = async () => {
@@ -30,15 +31,19 @@ function handle() {
             },
             body: JSON.stringify({ name: userName, password: hashedPassword, email: userEmail })
         })
+        if (res) {
+            router.push('/login')
+        }
 
 
-    }
-    // end of posting data
+    }// end of posting data
 
     return (
         <>
             <div>
-                <form action="/login" method="post">
+                <form method="post" onSubmit={(e) => {
+                    e.preventDefault()
+                }}>
                     <input type="text" name="name" value={userName} onChange={handleName} />
                     <input type="text" name="name" value={userPassword} onChange={handlePassword} />
                     <input type="text" name="name" value={userEmail} onChange={handleEmail} />

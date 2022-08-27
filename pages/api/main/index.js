@@ -1,6 +1,7 @@
 const connectDb = require('../../../mongo/conn')
 import nc from "next-connect"
 const Customer = require('../../../mongo/details')
+import bcrypt from 'bcryptjs'
 
 
 
@@ -8,21 +9,18 @@ connectDb()
 
 const handler = nc()
     .get(async (req, res) => {
-        try {
-            const data = await Customer.find({ name: req.body.name })
-            for (const ud of data) {
-                console.log(ud.name)
-            }
-            res.status(200).send(data[0])
-        } catch (error) {
-
+        const data = await Customer.find()
+        if (data) {
+            res.send(data)
         }
 
     })
     .post(async (req, res) => {
+        const userPassword = req.body.password
+        const hashedPassword = await bcrypt.hash(userPassword, 10)
         const data = Customer({
             name: req.body.name,
-            password: req.body.password,
+            password: hashedPassword,
             email: req.body.email
         })
         data.save().then(() => {
